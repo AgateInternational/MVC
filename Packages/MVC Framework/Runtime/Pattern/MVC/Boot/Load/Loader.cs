@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Framework.Architecture.Pattern.MVC
 {
-    public abstract class Loader<T> : Singleton<T>, ILoad where T : Loader<T>
+    public abstract class Loader<T> : Singleton<T>, ILoad where T : Loader<T>, new() 
     {
         public delegate void SceneLoadEvent(string sceneName);
 
@@ -13,7 +13,7 @@ namespace Framework.Architecture.Pattern.MVC
         public string CurrentScene { get { return _currentScene; } }
         public string RequestedScene { get { return _requestedScene; } }
 
-        protected Dictionary<string, ISceneController> _sceneControllers = new Dictionary<string, ISceneController>();
+        protected Dictionary<string, ILauncher> _sceneLaunchers = new Dictionary<string, ILauncher>();
         protected string _currentScene = null;
         protected string _previousScene = null;
         protected string _requestedScene = null;
@@ -28,12 +28,12 @@ namespace Framework.Architecture.Pattern.MVC
             }
         }
 
-        public void RequestLoadScene(string sceneName, ISceneController sceneController)
+        public void RequestLoadScene(string sceneName, ILauncher sceneController)
         {
             UnityEngine.Debug.Log("Request Load Scene " + sceneName);
-            if (!_sceneControllers.ContainsKey(sceneName))
+            if (!_sceneLaunchers.ContainsKey(sceneName))
             {
-                _sceneControllers.Add(sceneName, sceneController);
+                _sceneLaunchers.Add(sceneName, sceneController);
             }
 
             _requestedScene = sceneName;
@@ -60,7 +60,7 @@ namespace Framework.Architecture.Pattern.MVC
                     OnSceneChanged(_requestedScene);
                 }
             }
-            _sceneControllers[_requestedScene].Load(FinishLoad);
+            _sceneLaunchers[_requestedScene].Load(FinishLoad);
         }
 
         protected virtual void FinishLoad()
@@ -80,8 +80,8 @@ namespace Framework.Architecture.Pattern.MVC
 
             if (!string.IsNullOrEmpty(_currentScene))
             {
-                _sceneControllers[_currentScene].Unload(UnloadScene);
-                _sceneControllers.Remove(_currentScene);
+                _sceneLaunchers[_currentScene].Unload(UnloadScene);
+                _sceneLaunchers.Remove(_currentScene);
             }
         }
 
@@ -110,7 +110,7 @@ namespace Framework.Architecture.Pattern.MVC
         {
             UnityEngine.Debug.Log("Restart Scene " + _currentScene);
             ShowLoadingView();
-            _sceneControllers[_currentScene].Unload(ReloadScene);
+            _sceneLaunchers[_currentScene].Unload(ReloadScene);
         }
 
         protected virtual void ReloadScene()

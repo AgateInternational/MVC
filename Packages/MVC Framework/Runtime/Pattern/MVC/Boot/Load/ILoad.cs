@@ -4,6 +4,6 @@ namespace Framework.Architecture.Pattern.MVC
     {
         void LoadScene(string sceneName);
         void RestartScene();
-        void RequestLoadScene(string sceneName, ISceneController sceneController);
+        void RequestLoadScene(string sceneName, ILauncher launcher);
     }
 }

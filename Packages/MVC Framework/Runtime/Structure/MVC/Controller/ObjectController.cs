@@ -15,12 +15,13 @@ namespace Framework.Architecture.Base
     }
 
 
-    public abstract class ObjectController<TController, TModel, TInterfaceModel, TView> : ObjectController<TController, TView>
+    public abstract class ObjectController<TController, TModel, TInterfaceModel, TView> : BaseController<TController>
         where TController : ObjectController<TController, TModel, TInterfaceModel, TView>
         where TModel : BaseModel, TInterfaceModel, new()
         where TInterfaceModel : IBaseModel
-        where TView : BaseModelView<TInterfaceModel>
+        where TView : ObjectView<TInterfaceModel>
     {
+        protected TView _view;
         protected TModel _model;
 
         public TInterfaceModel Model
@@ -28,12 +29,12 @@ namespace Framework.Architecture.Base
             get { return _model; }
         }
 
-        public ViewController()
+        public ObjectController()
         {
             _model = new TModel();
         }
 
-        public override void SetView(TView view)
+        public virtual void SetView(TView view)
         {
             _view = view;
             _view.SetModel(_model);

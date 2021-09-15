@@ -70,7 +70,7 @@ namespace Framework.Architecture.Base
         #endregion
 
         #region Game Pattern
-        protected virtual void Publish<TMessage>(TMessage message) where TMessage : IMessage
+        protected virtual void Publish<TMessage>(TMessage message)
         {
             Context.Instance.Publish(message);
         }

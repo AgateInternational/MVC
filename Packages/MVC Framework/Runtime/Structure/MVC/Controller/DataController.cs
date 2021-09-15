@@ -6,7 +6,7 @@ namespace Framework.Architecture.Base
     {
         protected TModel _model;
 
-        public ModelController()
+        public DataController()
         {
             _model = new TModel();
         }
