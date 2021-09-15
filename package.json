@@ -1,0 +1,16 @@
+{
+  "name": "com.agate.mvc",
+  "version": "0.0.1",
+  "displayName": "MVC Framework",
+  "unity": "2019.1",
+  "keywords": [
+    "MVC",
+    "Framework"
+  ],
+  "author": {
+    "name": "Agate International",
+    "email": "wafi@agate.id",
+    "url": "https://agate.id/"
+  },
+  "description": "MVC Framework for Unity"
+}
