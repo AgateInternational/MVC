@@ -1,5 +1,5 @@
 {
-    "name": "Unity.MVCFramework.Runtime",
+    "name": "Framework.Architecture",
     "rootNamespace": "",
     "references": [],
     "includePlatforms": [],
