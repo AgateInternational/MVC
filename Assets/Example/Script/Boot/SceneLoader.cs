@@ -1,7 +1,9 @@
-namespace Game
+using Framework.Architecture.Pattern.MVC;
+
+namespace Game.Boot
 {
-public class SceneLoader
-{
-    
-}
+    public class SceneLoader : Loader<SceneLoader>
+    {
+
+    }
 }
