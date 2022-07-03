@@ -14,7 +14,7 @@ namespace Agate.MVC.Base
 
         protected virtual IEnumerator InitConnector()
         {
-            _connectors = GetMainConnectors();
+            _connectors = GetConnectors();
 
             if (_connectors != null)
             {
@@ -27,7 +27,7 @@ namespace Agate.MVC.Base
         }
 
         #region Abstract
-        protected abstract IConnector[] GetMainConnectors();
+        protected abstract IConnector[] GetConnectors();
         #endregion
     }
 }

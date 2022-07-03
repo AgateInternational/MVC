@@ -26,7 +26,7 @@ namespace Agate.MVC.Core
         {
             State = InitializeState.Initializing;
 
-            yield return InitSystem();
+            yield return StartInit();
             yield return InitDependencies();
             yield return FinalizeInit();
 
@@ -40,7 +40,7 @@ namespace Agate.MVC.Core
 
         protected virtual IEnumerator InitDependencies()
         {
-            var systems = GetSystemDependencies();
+            var systems = GetDependencies();
             if (systems != null)
             {
                 int count = systems.Length;
@@ -66,8 +66,8 @@ namespace Agate.MVC.Core
 
 
         #region Abstract Method
-        protected abstract IController[] GetSystemDependencies();
-        protected abstract IEnumerator InitSystem();
+        protected abstract IController[] GetDependencies();
+        protected abstract IEnumerator StartInit();
         protected abstract IEnumerator FinalizeInit();
         #endregion
     }
