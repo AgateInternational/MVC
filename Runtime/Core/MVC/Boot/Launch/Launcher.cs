@@ -15,7 +15,10 @@ namespace Agate.MVC.Core
         public SceneLoadState State { get; protected set; }
         #endregion
 
+        [SerializeField]
         protected TView _view;
+        [SerializeField]
+        protected string _sceneName;
         protected IController[] _dependencies;
 
         protected void Awake()
@@ -49,7 +52,7 @@ namespace Agate.MVC.Core
         protected virtual void RequestLoad()
         {
             var loader = GetLoader();
-            loader.RequestLoadScene(GetSceneName(), this);
+            loader.RequestLoadScene(_sceneName, this);
         }
 
         public virtual void Load(OnLoadFinish onFinish)
@@ -72,7 +75,6 @@ namespace Agate.MVC.Core
             }
         }
         #endregion
-
 
         #region Unload
         public virtual void Unload(OnLoadFinish onFinish)
@@ -126,7 +128,8 @@ namespace Agate.MVC.Core
 
         protected virtual IEnumerator InitSceneView()
         {
-            _view = GetSceneView();
+            // if scene is not assigned, initialize scene object here
+            // otherwise do nothing
             yield return null;
         }
         #endregion
@@ -159,11 +162,9 @@ namespace Agate.MVC.Core
         #endregion
 
         #region Abstract Method
-        protected abstract string GetSceneName();
         protected abstract IMain GetMain();
         protected abstract ILoad GetLoader();
         protected abstract IController[] GetSceneDependencies();
-        protected abstract TView GetSceneView();
         protected abstract IEnumerator InitSceneObject();
         #endregion
     }

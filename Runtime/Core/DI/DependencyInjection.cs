@@ -50,24 +50,6 @@ namespace Agate.MVC.Core
             }
             return false;
         }
-
-        public bool RegisterInterfaceDependencies<TClass, TInterface>(TClass t)
-        {
-            Type objectType = typeof(TClass);
-            Type[] interfaces = objectType.GetInterfaces();
-
-            bool found = false;
-
-            foreach (Type ti in interfaces)
-            {
-                if (ti is TInterface)
-                {
-                    RegisterDependencies(ti, t);
-                }
-            }
-
-            return found;
-        }
         #endregion
 
         #region Unregister

@@ -22,12 +22,24 @@ namespace Agate.MVC.Base
             yield return FinalizeSystem();
         }
 
+        public override IEnumerator Terminate()
+        {
+            UnregisterDependencies();
+            yield return TerminateSubControllers();
+            yield return TerminateSystem();
+        }
+
         protected virtual IEnumerator InitializeSystem()
         {
             yield return null;
         }
 
         protected virtual IEnumerator FinalizeSystem()
+        {
+            yield return null;
+        }
+
+        protected virtual IEnumerator TerminateSystem()
         {
             yield return null;
         }
@@ -55,6 +67,19 @@ namespace Agate.MVC.Base
                 for (int i = 0; i < count; i++)
                 {
                     yield return _subControllers[i].Finalize();
+                }
+            }
+            yield return null;
+        }
+
+        protected virtual IEnumerator TerminateSubControllers()
+        {
+            if (_subControllers != null)
+            {
+                int count = _subControllers.Length;
+                for (int i = 0; i < count; i++)
+                {
+                    yield return _subControllers[i].Terminate();
                 }
             }
             yield return null;
