@@ -7,6 +7,8 @@ namespace Example.Scene.Gameplay
 {
     public class GameplayLauncher : SceneLauncher<GameplayLauncher, GameplayView>
     {
+        public override string SceneName {get {return "Gameplay";}}
+
         protected override IController[] GetSceneDependencies()
         {
             return null;

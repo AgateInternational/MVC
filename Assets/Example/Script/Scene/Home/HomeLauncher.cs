@@ -7,6 +7,8 @@ namespace Example.Scene.Home
 {
     public class HomeLauncher : SceneLauncher<HomeLauncher, HomeView>
     {
+        public override string SceneName {get {return "Home";}}
+
         protected override IController[] GetSceneDependencies()
         {
             return null;

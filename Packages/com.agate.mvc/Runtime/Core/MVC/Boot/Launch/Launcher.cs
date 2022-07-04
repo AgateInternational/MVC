@@ -13,12 +13,11 @@ namespace Agate.MVC.Core
     {
         #region Interface Implementation
         public SceneLoadState State { get; protected set; }
+        public abstract string SceneName {get; }
         #endregion
 
         [SerializeField]
         protected TView _view;
-        [SerializeField]
-        protected string _sceneName;
         protected IController[] _dependencies;
 
         protected void Awake()
@@ -52,7 +51,7 @@ namespace Agate.MVC.Core
         protected virtual void RequestLoad()
         {
             var loader = GetLoader();
-            loader.RequestLoadScene(_sceneName, this);
+            loader.RequestLoadScene(SceneName, this);
         }
 
         public virtual void Load(OnLoadFinish onFinish)
