@@ -14,6 +14,25 @@ namespace Agate.MVC.Base
         }
     }
 
+    public abstract class ObjectController<TController, TModel, TView> : BaseController<TController>
+        where TController : ObjectController<TController, TModel, TView>
+        where TModel : BaseModel, new()
+        where TView : BaseView
+    {
+        protected TView _view;
+        protected TModel _model;
+
+        public ObjectController()
+        {
+            _model = new TModel();
+        }
+
+        public virtual void SetView(TView view)
+        {
+            _view = view;
+        }
+    }
+
 
     public abstract class ObjectController<TController, TModel, TInterfaceModel, TView> : BaseController<TController>
         where TController : ObjectController<TController, TModel, TInterfaceModel, TView>
