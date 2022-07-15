@@ -21,7 +21,7 @@ namespace Example.Scene.Idle.Tavern
         {
             Heroes.Add(hero);
             HeroCount++;
-            BuyPrice = 100 * HeroCount;
+            BuyPrice = 50 * HeroCount;
             SetDataAsDirty();
         }
 

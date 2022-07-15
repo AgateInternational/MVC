@@ -37,7 +37,7 @@ namespace Example.Scene.Idle.Timer
 
         public void UpdateTimer(long currentTime)
         {
-            if (IsStarted & !IsCompleted)
+            if (IsStarted && !IsCompleted)
             {
                 Passed = currentTime - StartTime;
                 Remaining = Passed >= Duration ? 0 : Duration - Passed;

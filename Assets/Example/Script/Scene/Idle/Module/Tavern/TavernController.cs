@@ -27,16 +27,18 @@ namespace Example.Scene.Idle.Tavern
         private void SummonHero()
         {
             int heroId = _model.HeroCount + 1;
-            int baseCost = 5 * heroId;
-            int baseIncome = heroId;
-            int duration = 2 * heroId;
+            int baseCost = 1 * heroId;
+            int baseIncome = 2 * heroId;
+            int duration = 1 * heroId;
             
             HeroModel heroModel = new HeroModel($"Hero {heroId}", baseIncome, baseCost, duration);
-            GameObject obj = _view.CreateHeroObject();
+            GameObject obj = _view.CreateHeroObject(heroModel.Name);
             HeroView heroView = obj.GetComponent<HeroView>();
             TimerView timerView = obj.GetComponent<TimerView>();
             
             HeroController hero = new HeroController();
+            InjectDependencies(hero);
+            
             hero.Init(heroModel, heroView, timerView);
             _model.AddHero(hero);
         }

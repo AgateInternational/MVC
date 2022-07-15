@@ -39,7 +39,7 @@ namespace Example.Scene.Idle.Hero
         {
             Level++;
             Income = Level * BaseIncome;
-            Cost = Cost * BaseCost;
+            Cost = Level * BaseCost;
             SetDataAsDirty();
         }
     }

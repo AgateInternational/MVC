@@ -22,9 +22,11 @@ namespace Example.Scene.Idle.Tavern
             _buyButton.onClick.AddListener(onBuy);
         }
 
-        public GameObject CreateHeroObject()
+        public GameObject CreateHeroObject(string objectName)
         {
             GameObject obj = GameObject.Instantiate(_heroTemplate, _heroContainer);
+            obj.name = objectName;
+            obj.SetActive(true);
             return obj;
         }
 

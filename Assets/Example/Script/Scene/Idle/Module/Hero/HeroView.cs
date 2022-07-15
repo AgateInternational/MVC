@@ -31,7 +31,7 @@ namespace Example.Scene.Idle.Hero
 
         protected override void UpdateRenderModel(IHeroModel model)
         {
-            _heroLevel.text = model.Level.ToString();
+            _heroLevel.text = $"Lv {model.Level}";
             _heroIncome.text = model.Income.ToString();
             _upgradeCost.text = model.Cost.ToString();
         }

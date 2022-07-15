@@ -9,6 +9,8 @@ namespace Example.Scene.Idle.Timer
     {
         [SerializeField]
         private Text _remainingDuration;
+        [SerializeField]
+        private Image _progressBar;
         private Action _onUpdate;
 
         public void Init(Action onUpdate)
@@ -28,7 +30,8 @@ namespace Example.Scene.Idle.Timer
 
         protected override void UpdateRenderModel(ITimerModel model)
         {
-
+            _remainingDuration.text = ((float) model.Remaining / 1000.0f).ToString("F2");
+            _progressBar.fillAmount = model.Progress;
         }
     }
 }
