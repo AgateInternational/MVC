@@ -1,22 +1,38 @@
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Agate.MVC.Core
 {
-    public abstract class Loader<T> : Singleton<T>, ILoad where T : Loader<T>, new() 
+    public abstract class Loader<T> : SingletonBehaviour<T>, ILoad where T : Loader<T>
     {
-        public delegate void SceneLoadEvent(string sceneName);
-
         public event SceneLoadEvent OnSceneChanged;
+        public event TransitionEvent OnStartTransition;
+        public event TransitionEvent OnFinishTransition;
 
         public string PreviousScene { get { return _previousScene; } }
         public string CurrentScene { get { return _currentScene; } }
         public string RequestedScene { get { return _requestedScene; } }
 
+        public bool IsInitialized { get; protected set; } = false;
+
         protected Dictionary<string, ILauncher> _sceneLaunchers = new Dictionary<string, ILauncher>();
         protected string _currentScene = null;
         protected string _previousScene = null;
         protected string _requestedScene = null;
+
+        #region Init
+        public void InitLoader()
+        {
+            if(!IsInitialized){
+                // load splash scene
+                SceneManager.LoadScene(SplashScene, LoadSceneMode.Additive);
+                IsInitialized = true;
+            }
+        }
+        #endregion
+
 
         #region Load
         public void LoadScene(string sceneName)
@@ -24,16 +40,27 @@ namespace Agate.MVC.Core
             if (!string.IsNullOrEmpty(sceneName))
             {
                 UnityEngine.Debug.Log("Load Scene " + sceneName);
-                SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+                _requestedScene = sceneName;
+
+                if (string.IsNullOrEmpty(_currentScene))
+                {
+                    // if current scene is fully unloaded
+                    SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+                }
+                else
+                {
+                    // otherwise unload current scene first
+                    StartUnload();
+                }
             }
         }
 
-        public void RequestLoadScene(string sceneName, ILauncher sceneController)
+        public void RegisterLauncher(string sceneName, ILauncher sceneLauncher)
         {
-            UnityEngine.Debug.Log("Request Load Scene " + sceneName);
+            UnityEngine.Debug.Log("Register Scene Launcher" + sceneName);
             if (!_sceneLaunchers.ContainsKey(sceneName))
             {
-                _sceneLaunchers.Add(sceneName, sceneController);
+                _sceneLaunchers.Add(sceneName, sceneLauncher);
             }
 
             _requestedScene = sceneName;
@@ -51,7 +78,7 @@ namespace Agate.MVC.Core
         protected virtual void StartLoad()
         {
             UnityEngine.Debug.Log("Start Load " + _requestedScene);
-            ShowLoadingView();
+            StartTransition();
 
             if (_requestedScene != _currentScene)
             {
@@ -68,7 +95,7 @@ namespace Agate.MVC.Core
             UnityEngine.Debug.Log("Finish Load " + _requestedScene);
             _currentScene = _requestedScene;
             _requestedScene = null;
-            HideLoadingView();
+            FinishTransition();
         }
         #endregion
 
@@ -76,7 +103,7 @@ namespace Agate.MVC.Core
         protected virtual void StartUnload()
         {
             UnityEngine.Debug.Log("Start Unload " + _currentScene);
-            ShowLoadingView();
+            StartTransition();
 
             if (!string.IsNullOrEmpty(_currentScene))
             {
@@ -101,7 +128,7 @@ namespace Agate.MVC.Core
         protected virtual void FinishUnload()
         {
             UnityEngine.Debug.Log("Finish Unload");
-            StartLoad();
+            LoadScene(_requestedScene);
         }
         #endregion
 
@@ -109,28 +136,32 @@ namespace Agate.MVC.Core
         public void RestartScene()
         {
             UnityEngine.Debug.Log("Restart Scene " + _currentScene);
-            ShowLoadingView();
-            _sceneLaunchers[_currentScene].Unload(ReloadScene);
-        }
-
-        protected virtual void ReloadScene()
-        {
-            UnityEngine.Debug.Log("Reload Scene " + _currentScene);
+            StartTransition();
             _requestedScene = _currentScene;
-            StartLoad();
+            StartUnload();
         }
         #endregion
 
-        #region Loading View
-        protected virtual void ShowLoadingView()
+        #region Broadcast Event
+        protected virtual void StartTransition()
         {
-
+            if (OnStartTransition != null)
+            {
+                OnStartTransition();
+            }
         }
 
-        protected virtual void HideLoadingView()
+        protected virtual void FinishTransition()
         {
-
+            if (OnFinishTransition != null)
+            {
+                OnFinishTransition();
+            }
         }
+        #endregion
+
+        #region Abstract Method
+        protected abstract string SplashScene { get; }
         #endregion
     }
 }

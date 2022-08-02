@@ -1,12 +1,14 @@
 namespace Agate.MVC.Core
 {
-    public delegate void OnInitializeProgress(int progress, int total);
-    public delegate void OnInitializeFinish();
+    public delegate void InitializeProgress(int progress, int total);
+    public delegate void InitializeEvent();
 
     public interface IMain
     {
-        event OnInitializeProgress OnInitializing;
-        event OnInitializeFinish OnInitialized;
+        event InitializeProgress OnInitializing;
+        event InitializeEvent OnInitializeStart;
+        event InitializeEvent OnInitializeFinish; 
         bool IsInitialized { get; }
+        void InitMain();
     }
 }

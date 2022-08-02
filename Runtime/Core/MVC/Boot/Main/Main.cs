@@ -10,31 +10,43 @@ namespace Agate.MVC.Core
     public abstract class Main<T> : SingletonBehaviour<T> where T : Main<T>, IMain
     {
         #region Interface Implementation
-        public event OnInitializeProgress OnInitializing;
-        public event OnInitializeFinish OnInitialized;
+        public event InitializeProgress OnInitializing;
+        public event InitializeEvent OnInitializeStart;
+        public event InitializeEvent OnInitializeFinish;
         public InitializeState State { get; protected set; }
         public bool IsInitialized { get { return State == InitializeState.Initialized; } }
         #endregion
 
         #region Initialize Process
-        protected virtual void Start()
+        public void InitMain()
         {
-            StartCoroutine(Initialize());
+            if (State == InitializeState.NotInitialized)
+            {
+                StartCoroutine(Initialize());
+            }
         }
 
         protected virtual IEnumerator Initialize()
         {
-            State = InitializeState.Initializing;
-
-            yield return StartInit();
-            yield return InitDependencies();
-            yield return FinalizeInit();
-
-            State = InitializeState.Initialized;
-
-            if (OnInitialized != null)
+            if (State == InitializeState.NotInitialized)
             {
-                OnInitialized();
+                State = InitializeState.Initializing;
+
+                if (OnInitializeStart != null)
+                {
+                    OnInitializeStart();
+                }
+
+                yield return StartInit();
+                yield return InitDependencies();
+                yield return FinalizeInit();
+
+                State = InitializeState.Initialized;
+
+                if (OnInitializeFinish != null)
+                {
+                    OnInitializeFinish();
+                }
             }
         }
 
