@@ -13,7 +13,7 @@ namespace Agate.MVC.Core
     {
         #region Interface Implementation
         public SceneLoadState State { get; protected set; }
-        public abstract string SceneName {get; }
+        public abstract string SceneName { get; }
         #endregion
 
         [SerializeField]
@@ -22,36 +22,52 @@ namespace Agate.MVC.Core
 
         protected void Awake()
         {
-            AutoInitialize();
+            StartCoroutine(AutoInitialize());
         }
 
         #region Auto Initialize
-        protected virtual void AutoInitialize()
+        protected virtual IEnumerator AutoInitialize()
         {
-            var main = GetMain();
+            ILoad loader = GetLoader();
+            if (!loader.IsInitialized)
+            {
+                loader.InitLoader();
+                yield return null;
+            }
+
+            ISplash splash = GetSplash();
+            if (!splash.IsInitialized)
+            {
+                splash.InitSplash();
+                yield return null;
+            }
+
+            IMain main = GetMain();
             if (main.IsInitialized)
             {
-                RequestLoad();
+                RegisterLauncher();
             }
             else
             {
-                main.OnInitialized += InitWhenReady;
+                main.OnInitializeFinish += InitWhenReady;
+                main.InitMain();
+                yield return null;
             }
         }
 
         protected virtual void InitWhenReady()
         {
-            var main = GetMain();
-            main.OnInitialized -= InitWhenReady;
-            RequestLoad();
+            IMain main = GetMain();
+            main.OnInitializeFinish -= InitWhenReady;
+            RegisterLauncher();
         }
         #endregion
 
         #region Loading
-        protected virtual void RequestLoad()
+        protected virtual void RegisterLauncher()
         {
             var loader = GetLoader();
-            loader.RequestLoadScene(SceneName, this);
+            loader.RegisterLauncher(SceneName, this);
         }
 
         public virtual void Load(OnLoadFinish onFinish)
@@ -163,6 +179,7 @@ namespace Agate.MVC.Core
         #region Abstract Method
         protected abstract IMain GetMain();
         protected abstract ILoad GetLoader();
+        protected abstract ISplash GetSplash();
         protected abstract IController[] GetSceneDependencies();
         protected abstract IEnumerator InitSceneObject();
         #endregion

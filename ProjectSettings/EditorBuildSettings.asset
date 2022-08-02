@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Example/Scene/Idle.unity
     guid: 9a30eac6c732acc47b771370a2d5b347
+  - enabled: 1
+    path: Assets/Example/Scene/Splash.unity
+    guid: be5890b40fc580e468299fdba4ba740f
   m_configObjects: {}
