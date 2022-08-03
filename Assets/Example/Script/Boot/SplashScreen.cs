@@ -23,26 +23,26 @@ namespace Example.Boot
 
         protected override void StartSplash()
         {
-            this.gameObject.SetActive(true);
+            base.StartSplash();
             _splashUI.SetActive(true);
             _transitionUI.SetActive(false);
         }
 
         protected override void FinishSplash()
         {
-            this.gameObject.SetActive(false);
+            base.FinishSplash();
             _splashUI.SetActive(false);
         }
 
         protected override void StartTransition()
         {
-            this.gameObject.SetActive(true);
+            base.StartTransition();
             _transitionUI.SetActive(true);
         }
 
         protected override void FinishTransition()
         {
-            this.gameObject.SetActive(false);
+            base.FinishTransition();
             _transitionUI.SetActive(false);
         }
 

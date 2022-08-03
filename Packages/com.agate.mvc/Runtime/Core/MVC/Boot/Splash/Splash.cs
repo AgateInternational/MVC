@@ -22,11 +22,29 @@ namespace Agate.MVC.Core
             }
         }
 
+        protected virtual void StartSplash()
+        {
+            this.gameObject.SetActive(true);
+        }
+
+        protected virtual void FinishSplash()
+        {
+            this.gameObject.SetActive(false);
+        }
+
+        protected virtual void StartTransition()
+        {
+            this.gameObject.SetActive(true);
+        }
+
+        protected virtual void FinishTransition()
+        {
+            this.gameObject.SetActive(false);
+        }
+
+        #region Abstract
         protected abstract IMain GetMain();
         protected abstract ILoad GetLoader();
-        protected abstract void StartSplash();
-        protected abstract void FinishSplash();
-        protected abstract void StartTransition();
-        protected abstract void FinishTransition();
+        #endregion
     }
 }
