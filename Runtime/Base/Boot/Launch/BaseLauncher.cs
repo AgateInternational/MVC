@@ -70,7 +70,7 @@ namespace Agate.MVC.Base
         #endregion
 
         #region Game Pattern
-        protected virtual void Publish<TMessage>(TMessage message)
+        protected virtual void Publish<TMessage>(TMessage message) where TMessage : struct
         {
             Context.Instance.Publish(message);
         }

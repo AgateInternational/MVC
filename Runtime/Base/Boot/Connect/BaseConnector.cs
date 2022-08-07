@@ -24,12 +24,12 @@ namespace Agate.MVC.Base
             Context.Instance.InjectDependencies(this);
         }
 
-        protected void Subscribe<TMessage>(Action<TMessage> subscriber)
+        protected void Subscribe<TMessage>(Action<TMessage> subscriber) where TMessage : struct
         {
             Context.Instance.Subscribe(subscriber);
         }
 
-        protected void Unsubscribe<TMessage>(Action<TMessage> subscriber)
+        protected void Unsubscribe<TMessage>(Action<TMessage> subscriber) where TMessage : struct
         {
             Context.Instance.Unsubscribe(subscriber);
         }
