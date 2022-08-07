@@ -45,17 +45,17 @@ namespace Agate.MVC.Base
         #endregion
 
         #region PubSub
-        public void Publish<TMessage>(TMessage message)
+        public void Publish<TMessage>(TMessage message) where TMessage : struct
         {
             _pubsub.Publish<TMessage>(message);
         }
 
-        public void Subscribe<TMessage>(Action<TMessage> subscriber)
+        public void Subscribe<TMessage>(Action<TMessage> subscriber) where TMessage : struct
         {
             _pubsub.Subscribe(subscriber);
         }
 
-        public void Unsubscribe<TMessage>(Action<TMessage> subscriber)
+        public void Unsubscribe<TMessage>(Action<TMessage> subscriber) where TMessage : struct
         {
             _pubsub.Unsubscribe(subscriber);
         }

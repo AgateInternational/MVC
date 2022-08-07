@@ -21,12 +21,12 @@ namespace Agate.MVC.Core
 
         private Aggregator _aggregator = new Aggregator();
 
-        public virtual void Publish<TMessage>(TMessage message)
+        public virtual void Publish<TMessage>(TMessage message) where TMessage : struct
         {
             _aggregator.Publish(message);
         }
 
-        public virtual void Subscribe<TMessage>(Action<TMessage> subscriber)
+        public virtual void Subscribe<TMessage>(Action<TMessage> subscriber) where TMessage : struct
         {
             _aggregator.Subscribe(subscriber);
         }
@@ -36,12 +36,12 @@ namespace Agate.MVC.Core
             _aggregator.UnsubscribeAll();
         }
 
-        public virtual void UnsubscribeAll<TMessage>()
+        public virtual void UnsubscribeAll<TMessage>() where TMessage : struct
         {
             _aggregator.UnsubscribeAll<TMessage>();
         }
 
-        public virtual void Unsubscribe<TMessage>(Action<TMessage> subscriber)
+        public virtual void Unsubscribe<TMessage>(Action<TMessage> subscriber) where TMessage : struct
         {
             _aggregator.Unsubscribe(subscriber);
         }
