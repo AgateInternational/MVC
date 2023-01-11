@@ -4,9 +4,9 @@
       ["@semantic-release/commit-analyzer", { "preset": "angular" }],
       "@semantic-release/release-notes-generator",
       ["@semantic-release/changelog", { "preset": "angular" }],
-      ["@semantic-release/npm", { "npmPublish": false, "pkgRoot": "Packages/com.littlebigfun.semantic-release-upm-example" }],
+      ["@semantic-release/npm", { "npmPublish": false, "pkgRoot": "Packages/com.agate.mvc" }],
       ["@semantic-release/git", {
-        "assets": ["Packages/com.littlebigfun.semantic-release-upm-example/package.json", "CHANGELOG.md"],
+        "assets": ["Packages/com.agate.mvc/package.json", "CHANGELOG.md"],
         "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
       }],
       "@semantic-release/github"
